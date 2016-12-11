@@ -1,0 +1,54 @@
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!forecasts"><em>Loading...</em></p>
+
+<dx-data-grid [dataSource]="forecasts"
+    [showBorders] = "true"
+    [filterRow] = '{
+            visible: true,
+            applyFilter: "auto"
+        }'
+    [searchPanel] = '{
+            visible: true,
+            width: 240,
+            placeholder: "Search..."
+        }'
+    [headerFilter] = '{
+            visible: true
+        }'
+	[masterDetail] = 
+	'{
+        enabled: true,
+        template: "detail"
+	 }'
+>
+    <div *dxTemplate="let options of 'detail'">
+        <dx-select-box #serieType
+            [items]="chartSeriesTypes"
+            [value]="chartSeriesTypes[0]"
+            [width]="200"></dx-select-box>
+
+        <dx-chart
+            class="full-width"
+            [dataSource]="temps">
+            <dxi-serie
+                argumentField="hour"
+                valueField="temp"
+                name="Temperature"></dxi-serie>    
+            <dxo-common-series-settings
+                color="#ffa500"
+                [type]="serieType.value"></dxo-common-series-settings>
+            <dxo-size
+                [height]="300"></dxo-size>
+        </dx-chart>
+    </div>
+</dx-data-grid> 
+
+<hr />
+<dx-button (onClick)="refresh()" text="Refresh data"></dx-button>
+
+
+
+
